@@ -83,10 +83,6 @@ npx cdk deploy
 - **Netlify / Vercel** — 拖拽上传或连接 Git 仓库
 - **S3 静态网站托管** — 手动上传 `index.html` 并开启静态网站托管
 
-## 内容来源
-
-页面内容翻译自 [AWS BuilderCards 2nd Edition の遊び方](https://aws.amazon.com/jp/builders-flash/202509/builder-cards-2nd-edition/)，图片引用自 AWS 官方 CDN。
-
 ## License
 
 本项目代码采用 MIT 许可证。页面中引用的 AWS BuilderCards 相关图片和内容版权归 Amazon Web Services 所有。
