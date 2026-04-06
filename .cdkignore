@@ -1,0 +1,12 @@
+infra
+infra/**
+.vscode
+.vscode/**
+.git
+.git/**
+node_modules
+node_modules/**
+.kiro
+.kiro/**
+cdk.out
+cdk.out/**

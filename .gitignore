@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# CDK build output (contains AWS account ID, IAM role ARNs, asset hashes)
+infra/cdk.out/
+
+# IDE
+.vscode/
+.idea/
+
+# Kiro
+.kiro/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

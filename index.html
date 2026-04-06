@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>亚马逊云科技 BuilderCards 第二版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #111820;
+  --bg3: #161e28;
+  --orange: #FF9900;
+  --teal: #00C7B7;
+  --text: #e8edf3;
+  --muted: #8899aa;
+  --border: rgba(255,153,0,0.15);
+  --glass: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:400;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+/* ── NOISE OVERLAY ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:.4;
+}
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2rem;height:60px;
+  background:rgba(13,17,23,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;letter-spacing:.1em;
+  color:var(--orange);
+}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{
+  color:var(--muted);font-size:.8rem;letter-spacing:.08em;
+  text-decoration:none;text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--orange)}
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;padding-top:60px;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#0d1117 0%,#0a1520 40%,#0d1117 100%);
+}
+.hero-bg-img{
+  position:absolute;inset:0;
+  background:url('https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-5.a9a781ea30289e8bc74e5f285037679f5177fb73.jpg') center/cover no-repeat;
+  opacity:.18;
+  mask-image:linear-gradient(to bottom,transparent 0%,black 20%,black 70%,transparent 100%);
+}
+.hero-grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,153,0,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,153,0,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.hero-glow{
+  position:absolute;top:20%;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,153,0,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-content{
+  position:relative;z-index:2;
+  text-align:center;padding:2rem;max-width:900px;
+}
+.hero-eyebrow{
+  display:inline-block;
+  font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--teal);border:1px solid rgba(0,199,183,.3);
+  padding:.3rem 1rem;border-radius:2px;margin-bottom:2rem;
+}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4rem,12vw,9rem);
+  line-height:.95;letter-spacing:.02em;
+  color:#fff;
+  text-shadow:0 0 80px rgba(255,153,0,.3);
+}
+.hero-title span{color:var(--orange)}
+.hero-title .brand-cn{font-family:'Noto Sans SC',sans-serif;font-size:clamp(2rem,6vw,4.5rem);letter-spacing:.05em;display:block;font-weight:700;line-height:1.2;font-style:normal}
+.hero-subtitle{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.2rem,3vw,2rem);
+  letter-spacing:.15em;color:var(--teal);
+  margin:.8rem 0 1.5rem;
+}
+.hero-desc{
+  font-size:1rem;color:var(--muted);
+  max-width:600px;margin:0 auto 2.5rem;
+  line-height:1.8;
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--orange);color:#000;
+  font-family:'Noto Sans SC',sans-serif;font-weight:700;
+  font-size:.9rem;letter-spacing:.05em;
+  padding:.8rem 2rem;border-radius:3px;
+  text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 0 30px rgba(255,153,0,.3);
+}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(255,153,0,.5)}
+.hero-scroll{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  color:var(--muted);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+}
+.scroll-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,var(--orange),transparent);
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.5)}50%{opacity:1;transform:scaleY(1)}}
+/* ── SECTIONS ── */
+section{padding:6rem 2rem}
+.container{max-width:1100px;margin:0 auto}
+.section-label{
+  font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:.8rem;
+}
+.section-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.5rem,6vw,4.5rem);
+  line-height:1;letter-spacing:.03em;
+  color:#fff;margin-bottom:1.5rem;
+}
+.section-title span{color:var(--teal)}
+/* ── WHAT IS ── */
+.what-is{background:var(--bg2)}
+.what-is .inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:center;
+}
+.what-is-text p{
+  color:var(--muted);font-size:1rem;line-height:1.9;
+}
+.what-is-img{
+  position:relative;border-radius:4px;overflow:hidden;
+}
+.what-is-img img{
+  width:100%;display:block;border-radius:4px;
+  border:1px solid var(--glass-border);
+  transition:transform .4s;
+}
+.what-is-img:hover img{transform:scale(1.03)}
+.what-is-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,153,0,.1),transparent);
+  pointer-events:none;
+}
+/* ── RULES GRID ── */
+.rules-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.5rem;margin-top:3rem;
+}
+.rule-card{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:6px;padding:2rem 1.5rem;
+  position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s;
+}
+.rule-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--orange),var(--teal));
+}
+.rule-card:hover{transform:translateY(-4px);border-color:rgba(255,153,0,.3)}
+.rule-icon{font-size:2rem;margin-bottom:1rem}
+.rule-label{
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:.4rem;
+}
+.rule-value{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;letter-spacing:.05em;color:#fff;
+}
+.rule-desc{font-size:.85rem;color:var(--muted);margin-top:.3rem}
+/* ── CARD TYPES ── */
+.card-types{background:var(--bg2)}
+.card-types-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2rem;margin-top:3rem;
+}
+.card-type{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:8px;overflow:hidden;
+  transition:transform .3s,box-shadow .3s;
+}
+.card-type:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 1px rgba(255,153,0,.2);
+}
+.card-type-img{
+  width:100%;object-fit:contain;
+  display:block;border-bottom:1px solid var(--glass-border);
+  background:var(--bg3);padding:1.5rem;
+}
+.card-type-body{padding:1.5rem}
+.card-type-tag{
+  display:inline-block;
+  font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bg);background:var(--orange);
+  padding:.2rem .6rem;border-radius:2px;margin-bottom:.8rem;
+}
+.card-type-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;letter-spacing:.05em;color:#fff;margin-bottom:.8rem;
+}
+.card-type-desc{font-size:.88rem;color:var(--muted);line-height:1.8}
+/* ── EFFECTS ── */
+.effects{background:var(--bg)}
+.effects-layout{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:start;margin-top:3rem;
+}
+.effects-img img{
+  width:100%;border-radius:6px;
+  border:1px solid var(--glass-border);
+}
+.effects-cards{display:flex;flex-direction:column;gap:1rem}
+.effect-card{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:6px;padding:1.2rem 1.5rem;
+  display:flex;align-items:flex-start;gap:1rem;
+  transition:border-color .3s;
+}
+.effect-card:hover{border-color:rgba(0,199,183,.4)}
+.effect-icon{font-size:1.5rem;flex-shrink:0;margin-top:.1rem}
+.effect-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem;letter-spacing:.05em;color:var(--teal);
+  margin-bottom:.3rem;
+}
+.effect-desc{font-size:.85rem;color:var(--muted);line-height:1.7}
+/* ── GAMEPLAY ── */
+.gameplay{background:var(--bg2)}
+.phase-header{
+  display:flex;align-items:center;gap:1rem;
+  margin:3rem 0 1.5rem;
+}
+.phase-badge{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:.9rem;letter-spacing:.15em;
+  color:var(--bg);background:var(--teal);
+  padding:.3rem .8rem;border-radius:2px;
+  white-space:nowrap;
+}
+.phase-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;letter-spacing:.05em;color:#fff;
+}
+.steps{display:flex;flex-direction:column;gap:1.5rem}
+.step{
+  display:grid;grid-template-columns:auto 1fr auto;
+  gap:1.5rem;align-items:center;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:6px;padding:1.5rem;
+  transition:border-color .3s;
+}
+.step-no-img{
+  grid-template-columns:auto 1fr;
+}
+.step:hover{border-color:rgba(255,153,0,.25)}
+.step-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.5rem;color:var(--orange);
+  opacity:.6;line-height:1;min-width:2rem;text-align:center;
+}
+.step-text strong{
+  display:block;font-size:1rem;color:#fff;margin-bottom:.3rem;
+}
+.step-text span{font-size:.85rem;color:var(--muted);line-height:1.7}
+.step-img{
+  width:120px;height:80px;object-fit:cover;
+  border-radius:4px;border:1px solid var(--glass-border);
+  flex-shrink:0;
+}
+/* ── TURN PHASES ── */
+.turn-phases{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:2rem;margin-top:2rem;
+}
+.turn-phase{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:8px;overflow:hidden;
+  transition:transform .3s;
+}
+.turn-phase:hover{transform:translateY(-4px)}
+.turn-phase-img{
+  width:100%;aspect-ratio:16/9;object-fit:cover;
+  border-bottom:1px solid var(--glass-border);
+}
+.turn-phase-body{padding:1.5rem}
+.turn-phase-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:.8rem;letter-spacing:.2em;color:var(--orange);
+  margin-bottom:.3rem;
+}
+.turn-phase-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;letter-spacing:.05em;color:#fff;margin-bottom:.8rem;
+}
+.turn-phase-desc{font-size:.85rem;color:var(--muted);line-height:1.8}
+/* ── END GAME ── */
+.endgame{background:var(--bg)}
+.endgame-box{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  border-radius:8px;padding:3rem;
+  position:relative;overflow:hidden;
+  margin-top:2rem;
+}
+.endgame-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--orange),var(--teal),var(--orange));
+}
+.endgame-box p{color:var(--muted);font-size:1rem;line-height:1.9;margin-bottom:1rem}
+.endgame-box p:last-child{margin-bottom:0}
+.win-condition{
+  display:flex;align-items:center;gap:1rem;
+  background:rgba(255,153,0,.06);
+  border:1px solid rgba(255,153,0,.2);
+  border-radius:6px;padding:1rem 1.5rem;
+  margin-top:1.5rem;
+}
+.win-icon{font-size:1.8rem}
+.win-text{font-size:.9rem;color:var(--text)}
+/* ── TIPS ── */
+.tips{background:var(--bg2)}
+.tips-box{
+  background:rgba(0,199,183,.05);
+  border:1px solid rgba(0,199,183,.2);
+  border-radius:8px;padding:2.5rem;
+  margin-top:2rem;position:relative;overflow:hidden;
+}
+.tips-box::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:3px;
+  background:var(--teal);
+}
+.tips-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.5rem;letter-spacing:.08em;color:var(--teal);
+  margin-bottom:1.5rem;
+}
+.tips-list{list-style:none;display:flex;flex-direction:column;gap:.8rem}
+.tips-list li{
+  display:flex;align-items:flex-start;gap:.8rem;
+  font-size:.9rem;color:var(--muted);
+}
+.tips-list li::before{
+  content:'▸';color:var(--teal);flex-shrink:0;margin-top:.1rem;
+}
+/* ── FOOTER ── */
+footer{
+  background:var(--bg);
+  border-top:1px solid var(--border);
+  padding:3rem 2rem;text-align:center;
+}
+.footer-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;letter-spacing:.1em;color:var(--orange);
+  margin-bottom:1rem;
+}
+.footer-link{
+  color:var(--teal);text-decoration:none;font-size:.9rem;
+  transition:color .2s;
+}
+.footer-link:hover{color:#fff}
+.footer-copy{
+  color:var(--muted);font-size:.8rem;margin-top:1rem;
+}
+/* ── DIVIDER ── */
+.divider{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,var(--orange),var(--teal));
+  margin:1.5rem 0;
+}
+/* ── FADE IN ── */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-delay-1{transition-delay:.1s}
+.fade-in-delay-2{transition-delay:.2s}
+.fade-in-delay-3{transition-delay:.3s}
+.fade-in-delay-4{transition-delay:.4s}
+/* ── CARD EXAMPLES (EC2 side by side) ── */
+.card-examples {
+  display:flex;gap:2rem;justify-content:center;
+  margin-top:2.5rem;flex-wrap:wrap;
+}
+.card-example {
+  display:flex;flex-direction:column;align-items:center;gap:.8rem;
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:8px;padding:1.5rem;
+  transition:transform .3s,border-color .3s;
+}
+.card-example:hover{transform:translateY(-4px);border-color:rgba(255,153,0,.3)}
+.card-example img {
+  width:160px;height:auto;object-fit:contain;border-radius:4px;
+}
+.card-example-caption {
+  font-size:.8rem;color:var(--muted);text-align:center;line-height:1.5;
+}
+/* ── PHASE DETAIL CARDS ── */
+.phase-detail {
+  margin-top:2rem;
+}
+.phase-detail-header {
+  display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;
+}
+.phase-img-card {
+  width:100%;border-radius:6px;overflow:hidden;
+  border:1px solid var(--glass-border);margin-bottom:1.5rem;
+}
+.phase-img-card img {
+  width:100%;max-height:300px;object-fit:cover;display:block;
+}
+.phase-sub-grid {
+  display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;
+}
+.phase-sub-card {
+  background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:8px;overflow:hidden;
+  transition:border-color .3s;
+}
+.phase-sub-card:hover{border-color:rgba(255,153,0,.2)}
+.phase-sub-card img {
+  width:100%;aspect-ratio:4/3;object-fit:cover;
+  border-bottom:1px solid var(--glass-border);
+}
+.phase-sub-body{padding:1.2rem 1.5rem}
+.phase-sub-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem;letter-spacing:.05em;color:var(--teal);
+  margin-bottom:.6rem;
+}
+.phase-sub-text {font-size:.85rem;color:var(--muted);line-height:1.8}
+.phase-tip {
+  background:rgba(255,153,0,.05);border:1px solid rgba(255,153,0,.15);
+  border-radius:4px;padding:.8rem 1rem;margin-top:.8rem;
+  font-size:.8rem;color:var(--muted);line-height:1.7;
+}
+.phase-tip::before{content:'💡 ';font-size:.9rem}
+/* ── TIPS CALLOUT ── */
+.tips-callout {
+  background:rgba(0,199,183,.05);
+  border:1px solid rgba(0,199,183,.2);
+  border-radius:8px;padding:2rem 2rem 2rem 2.5rem;
+  margin-top:2.5rem;position:relative;overflow:hidden;
+}
+.tips-callout::before {
+  content:'';position:absolute;top:0;left:0;bottom:0;width:3px;
+  background:var(--teal);
+}
+.tips-callout-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;letter-spacing:.08em;color:var(--teal);
+  margin-bottom:1rem;
+}
+.tips-callout ul {list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.tips-callout li {
+  display:flex;align-items:flex-start;gap:.8rem;
+  font-size:.88rem;color:var(--muted);
+}
+.tips-callout li::before{content:'▸';color:var(--teal);flex-shrink:0;margin-top:.1rem}
+/* ── CARD EXAMPLES SUBSECTION ── */
+.subsection-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;letter-spacing:.08em;color:var(--orange);
+  margin-top:3rem;margin-bottom:.5rem;
+}
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .what-is .inner{grid-template-columns:1fr}
+  .card-types-grid{grid-template-columns:1fr}
+  .effects-layout{grid-template-columns:1fr}
+  .step{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .step-img{grid-column:1/-1;width:100%;height:160px}
+  section{padding:4rem 1.2rem}
+  .phase-sub-grid{grid-template-columns:1fr}
+  .card-examples{flex-direction:column;align-items:center}
+  .tips-callout{grid-template-columns:1fr !important}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">BuilderCards</div>
+  <ul class="nav-links">
+    <li><a href="#what-is">介绍</a></li>
+    <li><a href="#card-types">卡牌种类</a></li>
+    <li><a href="#effects">特效</a></li>
+    <li><a href="#setup">准备</a></li>
+    <li><a href="#gameplay">游戏回合</a></li>
+    <li><a href="#video">视频</a></li>
+    <li><a href="#endgame">结束</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-img"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow fade-in">亚马逊云科技 · 卡牌游戏</div>
+    <h1 class="hero-title fade-in fade-in-delay-1"><em class="brand-cn">亚马逊云科技</em><span>Builder</span><br>Cards</h1>
+    <div class="hero-subtitle fade-in fade-in-delay-2">第二版 · 2nd Edition</div>
+    <p class="hero-desc fade-in fade-in-delay-3">通过组合亚马逊云科技服务卡牌，构建高可用、灵活、可扩展且安全的 Well-Architected 架构</p>
+    <a href="#what-is" class="hero-cta fade-in fade-in-delay-4">
+      <span>开始探索</span>
+      <span>↓</span>
+    </a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>向下滚动</span>
+  </div>
+</section>
+
+<!-- SECTION 01: WHAT IS -->
+<section class="what-is" id="what-is">
+  <div class="container">
+    <div class="inner">
+      <div class="what-is-text fade-in">
+        <div class="section-label">Section 01</div>
+        <h2 class="section-title">什么是 亚马逊云科技<br><span>BuilderCards</span>？</h2>
+        <div class="divider"></div>
+        <p>亚马逊云科技 BuilderCards 是一款由亚马逊云科技提供的卡牌游戏，玩家可以通过组合云服务卡牌来学习亚马逊云科技架构设计。游戏的核心理念是"构建模块"——将多个亚马逊云科技服务组合起来，构建出高可用、灵活、可扩展且安全的 Well-Architected 架构。</p>
+        <p style="margin-top:1rem">目前 BuilderCards 在中国尚未公开销售，主要通过亚马逊云科技 re:Invent 等活动限定发放。部分国家已开始销售，详情请访问 <a href="https://aws.amazon.com/gametech/buildercards/" target="_blank" rel="noopener" style="color:var(--teal)">官方网站</a>。如果你已经拥有一副，请和同事、社区伙伴或朋友一起游玩吧。</p>
+        <div class="rules-grid" style="margin-top:2.5rem">
+          <div class="rule-card fade-in fade-in-delay-1">
+            <div class="rule-icon">👥</div>
+            <div class="rule-label">游戏人数</div>
+            <div class="rule-value">2 ～ 4 人</div>
+            <div class="rule-desc">支持2至4名玩家同时游戏</div>
+          </div>
+          <div class="rule-card fade-in fade-in-delay-2">
+            <div class="rule-icon">🔄</div>
+            <div class="rule-label">游戏方式</div>
+            <div class="rule-value">回合制</div>
+            <div class="rule-desc">玩家轮流进行，每回合分3个阶段</div>
+          </div>
+          <div class="rule-card fade-in fade-in-delay-3">
+            <div class="rule-icon">🏆</div>
+            <div class="rule-label">胜利条件</div>
+            <div class="rule-value">积分最高</div>
+            <div class="rule-desc">Well-Architected 卡积分总和最高者获胜</div>
+          </div>
+          <div class="rule-card fade-in fade-in-delay-4">
+            <div class="rule-icon">🃏</div>
+            <div class="rule-label">游戏结束</div>
+            <div class="rule-value">牌堆耗尽</div>
+            <div class="rule-desc">Well-Architected 卡牌堆全部取完时游戏结束</div>
+          </div>
+        </div>
+      </div>
+      <div class="what-is-img fade-in fade-in-delay-2">
+        <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-6.a86037649dd23206edb1159a38ba1e204b0ef56e.jpg" alt="亚马逊云科技 BuilderCards 游戏概览" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 02: CARD TYPES -->
+<section class="card-types" id="card-types">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Section 02</div>
+      <h2 class="section-title">卡牌<span>种类</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="card-types-grid">
+      <div class="card-type fade-in fade-in-delay-1">
+        <img class="card-type-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-1.05538fa1c4063bd824a211fc64cfea974ae1f523.png" alt="起始卡样本" loading="lazy">
+        <div class="card-type-body">
+          <div class="card-type-tag">Starter Cards</div>
+          <div class="card-type-name">起始卡</div>
+          <p class="card-type-desc">游戏开始时发给每位玩家的卡牌，象征现有系统迁移上云。卡牌上印有上升箭头图案。右上角印有"S"标记，共4种颜色，每色10张。每位玩家持有同色10张开始游戏。</p>
+        </div>
+      </div>
+      <div class="card-type fade-in fade-in-delay-2">
+        <img class="card-type-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-2.247af6a1777d7783968466cc01f41ab51ccb733e.png" alt="架构卡样本" loading="lazy">
+        <div class="card-type-body">
+          <div class="card-type-tag">Well-Architected Cards</div>
+          <div class="card-type-name">架构卡</div>
+          <p class="card-type-desc">分为1分和3分两种。1分卡需3积分获取，3分卡需8积分获取。右上角标注所需积分，其下方的人物图标表示推荐游戏人数。例如图示卡牌标注3人以上推荐使用。2人游戏时，建议只使用标注了2人图标的 Well-Architected Cards。</p>
+        </div>
+      </div>
+      <div class="card-type fade-in fade-in-delay-3">
+        <img class="card-type-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-17.6c59ef420ebc332f748927dc4847b3038d5da153.png" alt="构建卡样本" loading="lazy">
+        <div class="card-type-body">
+          <div class="card-type-tag">Builder Cards</div>
+          <div class="card-type-name">构建卡</div>
+          <p class="card-type-desc">包含 Amazon EC2、Amazon Lambda 等亚马逊云科技服务及工具。右上角标有费用数字（无数字则免费获取）。卡牌中央标注积分，底部有 QR 码可查询服务详情。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Examples subsection -->
+    <div class="fade-in" style="margin-top:3rem">
+      <div class="subsection-title">构建卡示例</div>
+      <div class="divider"></div>
+    </div>
+    <div class="card-examples fade-in fade-in-delay-1">
+      <div class="card-example">
+        <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-3.025d5018f293103117ced771cfbedb950ad3b530.png" alt="Amazon EC2 卡牌 — 获取无需费用" loading="lazy">
+        <div class="card-example-caption">Amazon EC2 — 获取无需费用</div>
+      </div>
+      <div class="card-example">
+        <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-4.46b33994beec726e83eb8a59897296609e5c8d47.png" alt="Amazon EC2 Auto Scaling 卡牌 — 需3积分获取" loading="lazy">
+        <div class="card-example-caption">Amazon EC2 Auto Scaling — 需3积分获取</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 03: EFFECTS -->
+<section class="effects" id="effects">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Section 03</div>
+      <h2 class="section-title">特效<span>系统</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);font-size:1rem;line-height:1.9;max-width:800px">部分 Builder Card 拥有特殊效果，称为"特效（Effect）"。卡牌上段为主特效（Primary Effect），下段为副特效（Secondary Effect），满足图标右侧所示条件时触发。特效共有三种类型：额外抽牌、额外获取、以及触发后退役。详细说明请参见下方"特效详解"部分。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 04: SETUP -->
+<section class="gameplay" id="setup">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Section 04</div>
+      <h2 class="section-title">游戏<span>准备</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);font-size:1rem;line-height:1.9">以下介绍 2nd Edition 的基本玩法，省略了任务卡等高级规则。详细规则请参考 <a href="https://aws.amazon.com/gametech/buildercards/" target="_blank" rel="noopener" style="color:var(--teal)">官方网站</a> 内的规则 PDF。注意：1st Edition 与 2nd Edition 不兼容。</p>
+      <p style="color:var(--muted);font-size:1rem;line-height:1.9;margin-top:.8rem">游戏开始前，按以下步骤完成准备工作。</p>
+    </div>
+
+    <div class="steps" style="margin-top:2.5rem">
+      <div class="step fade-in">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>分发 Starter Cards</strong>
+          <span>各玩家取同色 Starter Card 10张，共4种颜色可选。</span>
+        </div>
+        <img class="step-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-5.a9a781ea30289e8bc74e5f285037679f5177fb73.jpg" alt="分发起始卡" loading="lazy">
+      </div>
+      <div class="step fade-in fade-in-delay-1">
+        <div class="step-num">1b</div>
+        <div class="step-text">
+          <strong>2人游戏时的颜色选择</strong>
+          <span>2人对战时，各自选择1种喜欢的颜色，剩余2种颜色放回盒中不使用。</span>
+        </div>
+        <img class="step-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-6.a86037649dd23206edb1159a38ba1e204b0ef56e.jpg" alt="2人游戏颜色选择" loading="lazy">
+      </div>
+      <div class="step fade-in fade-in-delay-2">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>洗牌 Builder Cards</strong>
+          <span>将 Builder Card 按右上角是否有费用数字（即费用图标）分成两堆。如右图所示，Amazon EC2 Auto Scaling 即为带有费用图标的卡牌。分好后分别充分洗牌。洗牌不充分可能导致同类卡牌集中，影响游戏平衡，请务必充分洗牌。</span>
+        </div>
+        <img class="step-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-7.f8a15e9b857db079176a641f7388b05bf194af33.jpg" alt="洗牌 Builder Cards — 费用图标示例" loading="lazy">
+      </div>
+      <div class="step fade-in fade-in-delay-2">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>准备 Well-Architected Cards</strong>
+          <span>Well-Architected Card 分1分和3分两种，1分卡在上、3分卡在下，正面朝上放置于中央区域。</span>
+        </div>
+        <img class="step-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-8.614e7fea16f0c9c4464f159ab3dcb6e58052ff40.jpg" alt="准备 Well-Architected Cards" loading="lazy">
+      </div>
+      <div class="step fade-in fade-in-delay-3">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <strong>布置控制台（Console）</strong>
+          <span>各玩家视角的中央区域称为"控制台（Console）"。左侧放无费用 Builder Cards（展示4张），右侧放有费用 Builder Cards（展示1张），中间放 Well-Architected Cards。若展示区出现相同卡牌则叠放。各玩家将自己的 Starter Cards 整理放置于各自区域。</span>
+        </div>
+        <img class="step-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-9.efe82ee630e51ca25c6ca25383437acf7997523a.jpg" alt="控制台布置" loading="lazy">
+      </div>
+      <div class="step fade-in fade-in-delay-4">
+        <div class="step-num">5</div>
+        <div class="step-text">
+          <strong>游戏开始前的 Starter Card 配置</strong>
+          <span>各玩家将自己的 Starter Cards 整理放置于各自区域，准备工作全部完成。</span>
+        </div>
+        <img class="step-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-11.e80d28b97aa6af9c7fe3beeb137a05f135d043de.jpg" alt="Starter Card 配置" loading="lazy">
+      </div>
+    </div>
+
+    <div class="tips-callout fade-in" style="margin-top:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center">
+      <div>
+        <div class="tips-callout-title">💡 缩短游戏时间的技巧</div>
+        <ul>
+          <li>2人游戏：移除3人和4人图标的 Well-Architected Cards</li>
+          <li>3人游戏：移除4人图标的 Well-Architected Cards</li>
+          <li>4人游戏：使用全部卡牌</li>
+        </ul>
+      </div>
+      <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-10.7c5341a0c15d8dce5db25cacbba5377b1d9e5f42.jpg" alt="缩短游戏时间的技巧" loading="lazy" style="width:100%;border-radius:6px;border:1px solid var(--glass-border)">
+    </div>
+
+    <div class="steps" style="margin-top:1.5rem">
+      <div class="step fade-in">
+        <div class="step-num">6</div>
+        <div class="step-text">
+          <strong>补充手牌至12张（Refill）</strong>
+          <span>从第一位玩家开始，依次从控制台左侧（无费用）Builder Cards 中取1张，取走后从牌堆补充1张保持4张展示。每人各取2张，使手牌达到12张。取走的卡牌会从牌堆中补充，此操作称为"补充（Refill）"。</span>
+        </div>
+        <img class="step-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-12.408100c088fed607d82f182e2a4c79f6e9d64d01.jpg" alt="补充手牌至12张" loading="lazy">
+      </div>
+      <div class="step fade-in fade-in-delay-1">
+        <div class="step-num">7</div>
+        <div class="step-text">
+          <strong>建立资源堆（Resource Pile）</strong>
+          <span>手牌达到12张后，将12张牌背面朝上洗牌，放置于玩家区域作为"资源堆（Resource Pile）"。然后从资源堆翻开5张作为手牌，游戏准备完成。初次游玩不知道选什么卡时，选自己喜欢的亚马逊云科技服务就好，轻松享受即可。</span>
+        </div>
+        <img class="step-img" src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-13.bb2bae311e7f37b83e9b73930cfaf39a9cc60f3d.jpg" alt="建立资源堆" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 05: GAMEPLAY -->
+<section class="effects" id="gameplay">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Section 05</div>
+      <h2 class="section-title">游戏<span>回合</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);font-size:1rem;line-height:1.9">游戏开始前先决定回合顺序。官方规则推荐按亚马逊云科技认证资格持有数量决定顺序，也可以用猜拳代替——猜拳获胜者先手，按顺时针方向轮流进行。每个回合由3个阶段构成。</p>
+    </div>
+
+    <!-- Phase 01: Build -->
+    <div class="phase-detail fade-in" style="margin-top:3rem">
+      <div class="phase-header">
+        <div class="phase-badge">Phase 01</div>
+        <div class="phase-title">构建阶段 · Build Phase</div>
+      </div>
+      <div class="phase-img-card">
+        <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-14.f53443b87def443b6129ece8fa201f1b114fa246.jpg" alt="构建阶段" loading="lazy">
+      </div>
+      <p style="color:var(--muted);font-size:.9rem;line-height:1.9;margin-bottom:1.5rem">每个回合从构建阶段开始。构建前先确认手牌中的5张卡牌，若 Builder Card 数量多于 Starter Card（即 Starter Card 数量少于 Builder Card），可以选择将1张 Starter Card 从游戏中永久移除。将卡牌从游戏中移除的操作称为"退役（Retire）"。</p>
+      <div class="phase-sub-grid">
+        <div class="phase-sub-card fade-in fade-in-delay-1">
+          <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-15.c3b060dcd7a90bc05a0d33e6ba446753ca4216fc.jpg" alt="退役 Starter Card" loading="lazy">
+          <div class="phase-sub-body">
+            <div class="phase-sub-title">退役（Retire）</div>
+            <p class="phase-sub-text">构建前，若手牌中 Builder Card 数量多于 Starter Card，可选择将1张 Starter Card 从游戏中永久移除，称为"退役（Retire）"。退役当回合手牌减少1张，但此后 Starter Card 出现概率降低，有利于积分积累。</p>
+            <div class="phase-tip">Starter Card 特殊组合：Virtual Machine + Bare Metal Host → 额外抽1张牌；亚马逊云科技 IAM Identity Center + Corporate Identity Provider → 获取阶段额外行动1次。</div>
+          </div>
+        </div>
+        <div class="phase-sub-card fade-in fade-in-delay-2">
+          <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-16.fb87752ef0e692bfddcd6a74d4cb69c5f90c185b.jpg" alt="部署架构与积分计算" loading="lazy">
+          <div class="phase-sub-body">
+            <div class="phase-sub-title">部署架构与积分计算</div>
+            <p class="phase-sub-text">从手牌中打出 Builder Cards，读取各卡条件，触发特效并部署架构。单张 Builder Card 也可以部署。如果手牌中没有 Builder Card 无法部署，则构建阶段直接结束，进入获取阶段。若触发了黑底+1抽牌特效，在此阶段立即使用。构建阶段结束后本回合架构不可更改，单张卡牌的积分加上特效产生的积分，即为本回合可用积分。</p>
+            <div class="phase-tip">示例：单独积分 0+0+2+2+1=5，特效（Amazon RDS 与 compute 服务组合）+2，合计7积分。</div>
+            <div class="phase-tip" style="margin-top:.5rem">【熟悉游戏后】部署时可以向其他玩家说明你构建的架构。其他玩家可以判断该架构是否合理——所有参与者都是 Builder，可以一起讨论。例如同时持有 Amazon EC2 和 Amazon Fargate 时，宣称"将 Amazon Fargate 挂载到 Amazon EC2 上部署"，这个架构是否正确？大家一起讨论决定。仅部署 Starter Card 时无需说明架构。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 02: Acquire -->
+    <div class="phase-detail fade-in" style="margin-top:3rem">
+      <div class="phase-header">
+        <div class="phase-badge">Phase 02</div>
+        <div class="phase-title">获取阶段 · Acquire Phase</div>
+      </div>
+      <div class="phase-img-card">
+        <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-15.c3b060dcd7a90bc05a0d33e6ba446753ca4216fc.jpg" alt="获取阶段" loading="lazy">
+      </div>
+      <p style="color:var(--muted);font-size:.9rem;line-height:1.9">使用本回合积分，从控制台获取1张 Builder Card 或 Well-Architected Card（每回合限1张，不能各取1张）。Well-Architected Card 必须从顶部依次获取，即使积分足够也不能跳过上面的卡直接取下面的3分卡。触发白云+1特效时，可额外获取1张（共2张）。获取 Builder Card 后，从对应牌堆 Refill 补充至原数量；Well-Architected Card 无需 Refill。</p>
+    </div>
+
+    <!-- Phase 03: End -->
+    <div class="phase-detail fade-in" style="margin-top:3rem">
+      <div class="phase-header">
+        <div class="phase-badge">Phase 03</div>
+        <div class="phase-title">回合结束阶段 · End Phase</div>
+      </div>
+      <div class="phase-img-card">
+        <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-18.6988005b5dc7d3934cbe5aae09acec37dbd79729.jpg" alt="回合结束阶段" loading="lazy">
+      </div>
+      <p style="color:var(--muted);font-size:.9rem;line-height:1.9">将手牌及本回合获取的卡牌全部放入弃牌堆（Discard Pile），再从资源堆抽取5张新手牌。资源堆耗尽时，将弃牌堆洗牌后重新作为资源堆使用。获取的卡牌经弃牌堆循环后，将来可用于构建阶段。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 06: EFFECTS DETAIL -->
+<section class="gameplay" id="effects-detail">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Section 06</div>
+      <h2 class="section-title">特效<span>详解</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="effects-layout" style="margin-top:2.5rem">
+      <div class="effects-img fade-in">
+        <img src="https://d1.awsstatic.com/onedam/marketing-channels/website/aws/ja_JP/developer/approved/images/202509/builder-cards-2nd-edition_image-19.ba503d8656cf5276e830cfcf19c58cf94d12cc68.png" alt="特效系统说明图" loading="lazy">
+      </div>
+      <div class="effects-cards">
+        <div class="effect-card fade-in fade-in-delay-1">
+          <div class="effect-icon">🃏</div>
+          <div>
+            <div class="effect-name">黑底 +1（额外抽牌）</div>
+            <p class="effect-desc">从资源堆额外抽取1张卡牌。触发后手牌变为6张，可用积分期望值提升。在构建阶段触发时立即使用。</p>
+          </div>
+        </div>
+        <div class="effect-card fade-in fade-in-delay-2">
+          <div class="effect-icon">☁️</div>
+          <div>
+            <div class="effect-name">白云 +1（额外获取）</div>
+            <p class="effect-desc">获取阶段可额外获取1张卡牌（共2张）。例如积分为10时，可同时获取3分 Well-Architected Card（需8积分）+ 无费用 Builder Card，或2张有费用 Builder Card 等组合。</p>
+          </div>
+        </div>
+        <div class="effect-card fade-in fade-in-delay-3">
+          <div class="effect-icon">🌅</div>
+          <div>
+            <div class="effect-name">落日图标（退役）</div>
+            <p class="effect-desc">特效触发后，该卡牌从游戏中永久移除。若不触发特效，则作为普通积分卡使用，回合结束后进入弃牌堆正常循环。例如 Cloud Financial Management 卡不使用特效时可作为2积分卡使用，使用特效后则从游戏中移除。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 07: END GAME -->
+<section class="endgame" id="endgame">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Section 07</div>
+      <h2 class="section-title">游戏<span>结束</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="endgame-box fade-in fade-in-delay-1">
+      <p>控制台上的 Well-Architected Cards 全部取完时，游戏立即结束。</p>
+      <p><strong style="color:var(--text)">胜利条件：</strong></p>
+      <p>主要：Well-Architected Card 积分总和最高的玩家获胜</p>
+      <p>平局：所持 Builder Cards 数量更多的玩家获胜</p>
+      <div class="win-condition">
+        <div class="win-icon">🏆</div>
+        <div class="win-text"><strong>胜利条件：</strong>Well-Architected Card 积分总和最高 → 平局时比较 Builder Cards 数量</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section class="gameplay" style="padding:4rem 2rem">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Summary</div>
+      <h2 class="section-title">总结</h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);font-size:1rem;line-height:1.9">以上就是亚马逊云科技 BuilderCards 2nd Edition 的基本玩法介绍。亚马逊云科技 BuilderCards 让你在游戏中与其他玩家交流互动，获得仅靠书本学习无法获得的亚马逊云科技架构实践体验。如果有机会，请一定和朋友们一起玩一局吧。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: VIDEO -->
+<section class="gameplay" id="video">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Tutorial</div>
+      <h2 class="section-title">教学<span>视频</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted);font-size:1rem;line-height:1.9">通过视频快速了解 亚马逊云科技 BuilderCards 的玩法与规则。</p>
+    </div>
+    <div class="fade-in fade-in-delay-1" style="margin-top:2rem">
+      <video controls playsinline preload="metadata" style="width:100%;border-radius:8px;border:1px solid var(--glass-border);background:#000">
+        <source src="https://connpass-images-usergroup-tokyo.s3.ap-northeast-1.amazonaws.com/2%E6%9C%8823%E6%97%A5.mp4" type="video/mp4">
+        您的浏览器不支持视频播放。
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">亚马逊云科技 BuilderCards</div>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:.8rem">在游戏中学习亚马逊云科技架构设计</p>
+  <a href="https://aws.amazon.com/gametech/buildercards/" target="_blank" rel="noopener" class="footer-link">亚马逊云科技 BuilderCards 官方网站 →</a>
+  <p class="footer-copy">Made with ❤️ by Kiro | Powered by Amazon Web Services</p>
+</footer>
+
+<script>
+// Intersection Observer for fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Hero elements animate immediately
+document.querySelectorAll('.hero .fade-in').forEach((el, i) => {
+  setTimeout(() => el.classList.add('visible'), 100 + i * 150);
+});
+
+// Nav active state on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--orange)' : '';
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
